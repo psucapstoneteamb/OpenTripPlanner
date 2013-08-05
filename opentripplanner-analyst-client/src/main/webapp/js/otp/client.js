@@ -161,12 +161,16 @@ if (AUTO_CENTER_MAP) {
 	request.send(null);
 	if (request.status == 200 && request.responseXML != null) {
 		var x = request.responseXML;
-		var minLat = parseFloat(x.getElementsByTagName('minLatitude')[0].textContent);
-		var maxLat = parseFloat(x.getElementsByTagName('maxLatitude')[0].textContent);
-		var minLon = parseFloat(x.getElementsByTagName('minLongitude')[0].textContent);
-		var maxLon = parseFloat(x.getElementsByTagName('maxLongitude')[0].textContent);
-		var lon = (minLon + maxLon) / 2;
-		var lat = (minLat + maxLat) / 2;
+		var cenLat = parseFloat(x.getElementsByTagName('centerLatitude')[0].textContent);
+		var cenLon = parseFloat(x.getElementsByTagName('centerLongitude')[0].textContent);
+		//var minLat = parseFloat(x.getElementsByTagName('minLatitude')[0].textContent);
+		//var maxLat = parseFloat(x.getElementsByTagName('maxLatitude')[0].textContent);
+		//var minLon = parseFloat(x.getElementsByTagName('minLongitude')[0].textContent);
+		//var maxLon = parseFloat(x.getElementsByTagName('maxLongitude')[0].textContent);
+		//var lon = (minLon + maxLon) / 2;
+		//var lat = (minLat + maxLat) / 2;
+		var lon = cenLon;
+		var lat = cenLat;
 		initLocation = new L.LatLng(lat, lon);
 	}
 }
@@ -241,6 +245,8 @@ function mapSetupTool() {
 	params.mode = [$('#setupMode').val()];
 	params.maxWalkDistance = [$('#setupMaxDistance').val()];
 	params.arriveBy = [$('#arriveByA').val()];
+	params.timeconstraint = [$('#timeConstraint').val()];; //only with case single origin/destination
+	
 	switch($('#compressWaits').val()) {
 		case 'optimize':
 			params.reverseOptimizeOnTheFly = ['true'];
@@ -426,4 +432,3 @@ $('#searchTypeSelect').change( function() {
 		}
 	}
 }).change(); // trigger this event (and implicitly a form change event) immediately upon binding
-

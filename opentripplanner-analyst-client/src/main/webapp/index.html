@@ -70,7 +70,7 @@
 						<option value="TRANSIT,WALK">Transit</option>
 						<option value="BUSISH,WALK">Bus only</option>
 						<option value="TRAINISH,WALK">Train only</option>
-						<option value="WALK">Walk only</option>
+						<option selected value="WALK">Walk only</option>
 						<option value="BICYCLE">Bicycle</option>
 						<option value="WALK,BICYCLE">Rented Bicycle</option>
 						<option value="TRANSIT,BICYCLE">Transit &amp; Bicycle</option>
@@ -87,6 +87,10 @@
 						<option value="8000">8km</option>
 						<option value="200000">Unlimited</option>
 					</select>
+				</span>
+				<span>
+					<label for="timeConstraint">Time Constraint:</label>
+					<input type="text" id="timeConstraint" value="15">
 				</span>
 			</div> <!-- END endpointAControls -->
 			<div id="endpointBControls" class="secondaryControl">
