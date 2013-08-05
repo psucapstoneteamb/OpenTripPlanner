@@ -269,6 +269,7 @@ public abstract class Tile {
 
     public BufferedImage generateImage(ShortestPathTree spt, RenderRequest renderRequest) {
         long t0 = System.currentTimeMillis();
+        long timeconstraint_ms = renderRequest.timeconstraint * 60;
         BufferedImage image = getEmptyImage(renderRequest.style);
         byte[] imagePixelData = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
         int i = 0;
@@ -279,7 +280,7 @@ public abstract class Tile {
                     pixel = s.evalBoardings(spt);
                 } else {
                     long t = s.eval(spt); // renderRequest.style
-                    if (t == Long.MAX_VALUE)
+                    if (t == Long.MAX_VALUE || t > timeconstraint_ms)
                         pixel = UNREACHABLE;
                     else {
                         t /= 60;

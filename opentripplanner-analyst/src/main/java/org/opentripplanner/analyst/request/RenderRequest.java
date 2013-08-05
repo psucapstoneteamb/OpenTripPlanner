@@ -24,14 +24,16 @@ public class RenderRequest {
     public final Style style; 
     public final boolean transparent;
     public final boolean timestamp;
+    public final Integer timeconstraint;
     
     public RenderRequest (MIMEImageFormat format, 
-        Layer layer, Style style, boolean transparent, boolean timestamp) {
+        Layer layer, Style style, boolean transparent, boolean timestamp, Integer timeconstraint) {
         this.format = format;
         this.layer = layer;
         this.style = style;
         this.transparent = transparent;
         this.timestamp = timestamp;
+        this.timeconstraint = timeconstraint;
     }
     
     public String toString() {

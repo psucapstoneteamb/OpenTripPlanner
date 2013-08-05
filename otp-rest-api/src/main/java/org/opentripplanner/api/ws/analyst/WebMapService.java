@@ -125,7 +125,7 @@ public class WebMapService extends RoutingResource {
         TileRequest tileRequest = new TileRequest(bbox, width, height);
         Layer layer = layers.get(0);
         Style style = styles.get(0);
-        RenderRequest renderRequest = new RenderRequest(format, layer, style, transparent, timestamp);
+        RenderRequest renderRequest = new RenderRequest(format, layer, style, transparent, timestamp, 120);
         
         if (layer != Layer.DIFFERENCE) {
 //            noPurple = req.clone();
