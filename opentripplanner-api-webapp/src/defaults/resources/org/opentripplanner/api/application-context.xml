@@ -46,10 +46,10 @@
   <context:component-scan base-package="org.opentripplanner.analyst"/>
   <bean class="org.opentripplanner.analyst.core.GeometryIndex"/>
   <bean class="org.opentripplanner.analyst.request.SPTCache">
-      <property name="size" value="20" />
+      <property name="size" value="5" />
   </bean>
   <bean class="org.opentripplanner.analyst.request.TileCache">
-      <property name="size" value="900" />
+      <property name="size" value="100" />
   </bean>
   <!-- end of optional Analyst modules -->
 
