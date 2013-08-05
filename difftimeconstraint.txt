@@ -1,0 +1,88 @@
+diff --git a/opentripplanner-analyst/src/main/java/org/opentripplanner/analyst/core/Tile.java b/opentripplanner-analyst/src/main/java/org/opentripplanner/analyst/core/Tile.java
+index db7fc47..1151e7a 100644
+--- a/opentripplanner-analyst/src/main/java/org/opentripplanner/analyst/core/Tile.java
++++ b/opentripplanner-analyst/src/main/java/org/opentripplanner/analyst/core/Tile.java
+@@ -269,6 +269,7 @@ public abstract class Tile {
+ 
+     public BufferedImage generateImage(ShortestPathTree spt, RenderRequest renderRequest) {
+         long t0 = System.currentTimeMillis();
++        long timeconstraint_ms = renderRequest.timeconstraint * 60;
+         BufferedImage image = getEmptyImage(renderRequest.style);
+         byte[] imagePixelData = ((DataBufferByte)image.getRaster().getDataBuffer()).getData();
+         int i = 0;
+@@ -279,7 +280,7 @@ public abstract class Tile {
+                     pixel = s.evalBoardings(spt);
+                 } else {
+                     long t = s.eval(spt); // renderRequest.style
+-                    if (t == Long.MAX_VALUE)
++                    if (t == Long.MAX_VALUE || t > timeconstraint_ms)
+                         pixel = UNREACHABLE;
+                     else {
+                         t /= 60;
+diff --git a/opentripplanner-analyst/src/main/java/org/opentripplanner/analyst/request/RenderRequest.java b/opentripplanner-analyst/src/main/java/org/opentripplanner/analyst/request/RenderRequest.java
+index 63dc1ef..04bae91 100644
+--- a/opentripplanner-analyst/src/main/java/org/opentripplanner/analyst/request/RenderRequest.java
++++ b/opentripplanner-analyst/src/main/java/org/opentripplanner/analyst/request/RenderRequest.java
+@@ -24,14 +24,16 @@ public class RenderRequest {
+     public final Style style; 
+     public final boolean transparent;
+     public final boolean timestamp;
++    public final Integer timeconstraint;
+     
+     public RenderRequest (MIMEImageFormat format, 
+-        Layer layer, Style style, boolean transparent, boolean timestamp) {
++        Layer layer, Style style, boolean transparent, boolean timestamp, Integer timeconstraint) {
+         this.format = format;
+         this.layer = layer;
+         this.style = style;
+         this.transparent = transparent;
+         this.timestamp = timestamp;
++        this.timeconstraint = timeconstraint;
+     }
+     
+     public String toString() {
+diff --git a/otp-rest-api/src/main/java/org/opentripplanner/api/ws/analyst/TileService.java b/otp-rest-api/src/main/java/org/opentripplanner/api/ws/analyst/TileService.java
+index 29557a9..ebb6e91 100644
+--- a/otp-rest-api/src/main/java/org/opentripplanner/api/ws/analyst/TileService.java
++++ b/otp-rest-api/src/main/java/org/opentripplanner/api/ws/analyst/TileService.java
+@@ -54,6 +54,7 @@ public class TileService extends RoutingResource {
+     @QueryParam("layers")  @DefaultValue("traveltime") LayerList layers; 
+     @QueryParam("styles")  @DefaultValue("mask")       StyleList styles;
+     @QueryParam("format")  @DefaultValue("image/png")  MIMEImageFormat format;
++    @QueryParam("timeconstraint") @DefaultValue("15")  Integer timeconstraint;
+ 
+     @GET @Produces("image/*")
+     public Response tileGet() throws Exception { 
+@@ -65,9 +66,9 @@ public class TileService extends RoutingResource {
+ 
+         Layer layer = layers.get(0);
+         Style style = styles.get(0);
+-        RenderRequest renderRequest = new RenderRequest(format, layer, style, true, false);
++        RenderRequest renderRequest = new RenderRequest(format, layer, style, true, false, timeconstraint);
+ 
+         return renderer.getResponse(tileRequest, sptRequestA, sptRequestB, renderRequest);
+     }
+ 
+-}
+\ No newline at end of file
++}
+diff --git a/otp-rest-api/src/main/java/org/opentripplanner/api/ws/analyst/WebMapService.java b/otp-rest-api/src/main/java/org/opentripplanner/api/ws/analyst/WebMapService.java
+index b554a7b..98a141c 100644
+--- a/otp-rest-api/src/main/java/org/opentripplanner/api/ws/analyst/WebMapService.java
++++ b/otp-rest-api/src/main/java/org/opentripplanner/api/ws/analyst/WebMapService.java
+@@ -125,7 +125,7 @@ public class WebMapService extends RoutingResource {
+         TileRequest tileRequest = new TileRequest(bbox, width, height);
+         Layer layer = layers.get(0);
+         Style style = styles.get(0);
+-        RenderRequest renderRequest = new RenderRequest(format, layer, style, transparent, timestamp);
++        RenderRequest renderRequest = new RenderRequest(format, layer, style, transparent, timestamp, 120);
+         
+         if (layer != Layer.DIFFERENCE) {
+ //            noPurple = req.clone();
+@@ -143,4 +143,4 @@ public class WebMapService extends RoutingResource {
+         return Response.ok().entity(xml).type("text/xml").build();
+     }
+     
+-}
+\ No newline at end of file
++}

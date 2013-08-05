@@ -54,6 +54,7 @@ public class TileService extends RoutingResource {
     @QueryParam("layers")  @DefaultValue("traveltime") LayerList layers; 
     @QueryParam("styles")  @DefaultValue("mask")       StyleList styles;
     @QueryParam("format")  @DefaultValue("image/png")  MIMEImageFormat format;
+    @QueryParam("timeconstraint") @DefaultValue("15")  Integer timeconstraint;
 
     @GET @Produces("image/*")
     public Response tileGet() throws Exception { 
@@ -65,7 +66,7 @@ public class TileService extends RoutingResource {
 
         Layer layer = layers.get(0);
         Style style = styles.get(0);
-        RenderRequest renderRequest = new RenderRequest(format, layer, style, true, false);
+        RenderRequest renderRequest = new RenderRequest(format, layer, style, true, false, timeconstraint);
 
         return renderer.getResponse(tileRequest, sptRequestA, sptRequestB, renderRequest);
     }
