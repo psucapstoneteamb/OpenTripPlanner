@@ -18,5 +18,8 @@ public enum Style {
     DIFFERENCE, 
     TRANSPARENT,
     MASK,
+    MASKRED,
+    MASKGREEN,
+    MASKBLUE,
     BOARDINGS
 }
