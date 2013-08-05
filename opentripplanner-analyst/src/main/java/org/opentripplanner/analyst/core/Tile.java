@@ -116,6 +116,28 @@ public abstract class Tile {
         {90,  100, 100, 100, 50},
         {121, 100, 100, 100, 200} 
     });
+
+    private static final IndexColorModel ICM_MASK_BLUE = interpolatedColorMap( new int[][] { 
+        {-128,  0,   0,   0, 0}, // for unreachable places 
+        {120,   0,   0, 140, 90},
+        {  0,   0,   0, 140, 90},
+        {120,   0,   0, 140, 90},
+        {121,   0,   0,   0, 0} 
+    });
+    
+    private static final IndexColorModel ICM_MASK_GREEN = interpolatedColorMap( new int[][] { 
+        {-128,  0,   0,   0, 0}, // for unreachable places 
+        {  0,   0, 140,   0, 90},
+        {120,   0, 140,   0, 90},
+        {121,   0,   0,   0, 0} 
+    });
+    
+    private static final IndexColorModel ICM_MASK_RED = interpolatedColorMap( new int[][] { 
+        {-128,  0,   0,   0, 0}, // for unreachable places 
+        {  0, 140,   0,   0, 90},
+        {120, 140,   0,   0, 90},
+        {121,   0,   0,   0, 0} 
+    });
     
     private static final IndexColorModel ICM_DIFFERENCE_15 = interpolatedColorMap( new int[][] { 
         {-128,   0,   0, 0,   0},
@@ -191,6 +213,9 @@ public abstract class Tile {
         modelsByStyle.put(Style.DIFFERENCE, ICM_DIFFERENCE_15);
         modelsByStyle.put(Style.TRANSPARENT, ICM_GRAY_60); 
         modelsByStyle.put(Style.MASK, ICM_MASK_60);
+        modelsByStyle.put(Style.MASKBLUE, ICM_MASK_BLUE);
+        modelsByStyle.put(Style.MASKGREEN, ICM_MASK_GREEN);
+        modelsByStyle.put(Style.MASKRED, ICM_MASK_RED);
         modelsByStyle.put(Style.BOARDINGS, buildBoardingColorMap());
     }
     
