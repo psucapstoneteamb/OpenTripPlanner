@@ -39,7 +39,7 @@ public class SPTCache extends CacheLoader<RoutingRequest, ShortestPathTree> {
 
     private LoadingCache<RoutingRequest, ShortestPathTree> sptCache;
 
-    @Setter private int size = 200;
+    @Setter private int size = 20;
     @Setter private int concurrency = 16;
             
     @PostConstruct

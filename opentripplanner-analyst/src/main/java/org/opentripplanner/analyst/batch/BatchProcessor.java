@@ -58,7 +58,7 @@ public class BatchProcessor {
     @Setter private Aggregator aggregator;
     @Setter private Accumulator accumulator;
     @Setter private int logThrottleSeconds = 4;    
-    @Setter private int searchCutoffSeconds = -1;
+    @Setter private int searchCutoffSeconds = 5400;
     
     /**
      * Empirical results for a 4-core processor (with 8 fake hyperthreading cores):
@@ -84,7 +84,7 @@ public class BatchProcessor {
     
     /** Cut off the search instead of building a full path tree. Can greatly improve run times. */
     public void setSearchCutoffMinutes(int minutes) {
-        this.searchCutoffSeconds = minutes * 60;
+        //this.searchCutoffSeconds = minutes * 60;
     }
     
     public static void main(String[] args) throws IOException {
