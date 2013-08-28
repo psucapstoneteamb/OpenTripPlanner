@@ -72,7 +72,7 @@ public class Raster {
         }
         TileRequest tileRequest = new TileRequest(bbox, width, height);
         SPTRequest sptRequest = new SPTRequest(x, y, time);
-        RenderRequest renderRequest = new RenderRequest(format, Layer.TRAVELTIME, Style.GRAY, false, false);
+        RenderRequest renderRequest = new RenderRequest(format, Layer.TRAVELTIME, Style.GRAY, false, false, 120);
 
         return null; //renderer.getResponse(tileRequest, sptRequest, null, renderRequest);
         
